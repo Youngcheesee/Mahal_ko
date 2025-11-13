@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For my Kaszandra ❤️</title>
+    <!-- Makes it feel like a full-screen app on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            font-family: 'Inter', sans-serif;
+            /* Prevent scrolling and bouncing */
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* A simple pulsating animation for the heart */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .heart-pulse {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        /* Custom transition for the message */
+        #message {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .message-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .message-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ensure no weird text selection on tap */
+        .no-select {
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard */
+        }
+    </style>
+</head>
+<body class="h-full bg-gradient-to-t from-pink-300 to-rose-200 flex flex-col items-center justify-center p-4 no-select">
+
+    <!-- Main container for the app content -->
+    <div class="flex flex-col items-center justify-center text-center w-full h-full">
+
+        <!-- The tappable heart -->
+        <!-- We use 'touchstart' and 'mousedown' for instant response on mobile and desktop -->
+        <div id="heart" class="cursor-pointer heart-pulse">
+            <svg class="w-48 h-48 drop-shadow-lg" viewBox="0 0 24 24" fill="url(#heartGradient)">
+                <defs>
+                    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FF8FAB; stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FB6391; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
+        <!-- The message area -->
+        <div id="message-container" class="h-32 mt-10">
+            <p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">
+                Tap the heart!
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- TODO: Add your own personal reasons here! ---
+        // This is the most important part to customize.
+        // Just add more strings to this list.
+        const reasons = [
+            "Your smile lights up my whole day.",
+            "The way you laugh at my silly jokes.",
+            "OK",
+            "You always know how to make me feel better.",
+            "Your incredible intelligence.",
+            "How you look at me.",
+            "That we can just be silly together.",
+            "Your passion for the things you care about.",
+            "Your adventurous spirit.",
+            "How supportive you are of my dreams.",
+            "The way your eyes sparkle.",
+            "You make me a better person.",
+            "I can be my complete self around you.",
+            "You're my best friend.",
+            "How you care for the people around you.",
+            "Your unconditional love."
+        ];
+        // --------------------------------------------------
+
+        const heart = document.getElementById('heart');
+        const message = document.getElementById('message');
+        let currentReason = "";
+
+        function showNewReason() {
+            // Hide the current message
+            message.classList.remove('message-visible');
+            message.classList.add('message-hidden');
+
+            // Wait for the fade-out animation to finish
+            setTimeout(() => {
+                let newReason = "";
+                // Make sure we don't show the same reason twice in a row
+                do {
+                    const randomIndex = Math.floor(Math.random() * reasons.length);
+                    newReason = reasons[randomIndex];
+                } while (reasons.length > 1 && newReason === currentReason);
+
+                currentReason = newReason;
+
+                // Set the new text
+                message.textContent = currentReason;
+
+                // Fade the new message in
+                message.classList.remove('message-hidden');
+                message.classList.add('message-visible');
+
+            }, 500); // This matches the transition duration
+        }
+
+        // Show the initial message on load
+        setTimeout(() => {
+            message.textContent = "Tap the heart!";
+            message.classList.remove('message-hidden');
+            message.classList.add('message-visible');
+        }, 100);
+
+        // We add 'click' for desktop and 'touchstart' for mobile
+        // 'touchstart' feels more responsive than 'click' on a phone
+        heart.addEventListener('click', showNewReason);
+        heart.addEventListener('touchstart', (e) => {
+            // Prevent the 'click' event from firing right after
+            e.preventDefault();
+            showNewReason();
+        });
+
+    </script>
+</body>
+</html>
