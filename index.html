@@ -36,8 +36,9 @@
             animation: pulse 2s infinite ease-in-out;
         }
 
-        /* Custom transition for the message */
-        #message {
+        /* Custom transition for the message OR picture */
+        /* These classes will be applied to <p> or <img> tags */
+        #message-container > * {
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
 
@@ -78,8 +79,12 @@
             </svg>
         </div>
 
-        <!-- The message area -->
-        <div id="message-container" class="h-32 mt-10">
+        <!-- 
+          The message/picture area. 
+          I changed h-32 (fixed height) to min-h-[8rem] (minimum height) 
+          and added flex utils to center the content. This lets it grow for pictures.
+        -->
+        <div id="message-container" class="min-h-[8rem] mt-10 flex justify-center items-center">
             <p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">
                 Tap the heart!
             </p>
@@ -92,80 +97,125 @@
         // to make sure the HTML document is fully loaded before running any code.
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Your list of beautiful reasons
-            const reasons = [
-                "Your smile lights up my whole day.",
-                "You are endlessly interesting, I can't get enough of listening to you.",
-                "Your gorgeous lips",
-                "The bite of your nose.",
-                "You're the prettiest girl.",
-                "I love your brain!",
-                "The way you think and reason. I love that you give me new perspectives",
-                "The feeling I get when I am out with you.",
-                "Your passion for the things you care about.",
-                "You know me so well. It feels so special to be known by you.",
-                "How much you care, so much more than I could ask for. Like I genuinely feel so loved when you casually do something I didn't think you could notice.",
-                "I am taken into another world when I look in your eyes that I don't want to leave.",
-                "You're my mirror in the best way.",
-                "You make me feel safer than I ever felt before.",
-                "You are my best friend.",
-                "Your eye for things that are special.",
-                "How you move",
-                "Your laugh",
-                "Your beautiful voice",
-                "How you react when I say I'll tickle you, and I'm not even touching you",
-                "Your music taste and listening to music with you, its so beautiful how I can actually feel the words now.",
-                "Licking teeth.",
-                "Your sense of style. Very good.",
-                "Ang sarap sarap mo.",
-                "Just the epitome of beautiful",
-                "just beautiful by definition",
-                "When you read this I want you to know that you're my world. You do make everything lighter. I think about you a lot and I get kilig every time. Your smile makes me smile and makes me so happy.",
-                "When you said: 'Looking for a therapist for when you lose me?' just after I said I'm writing how much I love you.",
-                "I LOWKEY wanna have intense diarrhea."
+            // --- THIS IS THE PART TO EDIT ---
+            // Add all your text reasons and picture filenames here.
+            const allReasons = [
+                // --- Your Text Reasons ---
+                { type: 'text', content: "Your smile lights up my whole day." },
+                { type: 'text', content: "You are endlessly interesting, I can't get enough of listening to you." },
+                { type: 'text', content: "Your gorgeous lips" },
+                { type: 'text', content: "The bite of your nose." },
+                { type: 'text', content: "You're the prettiest girl." },
+                { type: 'text', content: "I love your brain!" },
+                { type: 'text', content: "The way you think and reason. I love that you give me new perspectives" },
+                { type: 'text', content: "The feeling I get when I am out with you." },
+                { type: 'text', content: "Your passion for the things you care about." },
+                { type: 'text', content: "You know me so well. It feels so special to be known by you." },
+                { type: 'text', content: "How much you care, so much more than I could ask for. Like I genuinely feel so loved when you casually do something I didn't think you could notice." },
+                { type: 'text', content: "I am taken into another world when I look in your eyes that I don't want to leave." },
+                { type: 'text', content: "You're my mirror in the best way." },
+                { type: 'text', content: "You make me feel safer than I ever felt before." },
+                { type: 'text', content: "You are my best friend." },
+                { type: 'text', content: "Your eye for things that are special." },
+                { type: 'text', content: "How you move" },
+                { type: 'text', content: "Your laugh" },
+                { type: 'text', content: "Your beautiful voice" },
+                { type: 'text', content: "How you react when I say I'll tickle you, and I'm not even touching you" },
+                { type: 'text', content: "Your music taste and listening to music with you, its so beautiful how I can actually feel the words now." },
+                { type: 'text', content: "Licking teeth." },
+                { type: 'text', content: "Your sense of style. Very good." },
+                { type: 'text', content: "Ang sarap sarap mo." },
+                { type: 'text', content: "Just the epitome of beautiful" },
+                { type: 'text', content: "just beautiful by definition" },
+                { type: 'text', content: "When you read this I want you to know that you're my world. You do make everything lighter. I think about you a lot and I get kilig every time. Your smile makes me smile and makes me so happy." },
+                { type: 'text', content: "When you said: 'Looking for a therapist for when you lose me?' just after I said I'm writing how much I love you." },
+                { type: 'text', content: "I LOWKEY wanna have intense diarrhea." },
+
+                // --- Your 21 Pictures ---
+                { type: 'image', content: 'pic1.jpg' },
+                { type: 'image', content: 'pic2.jpg' },
+                { type: 'image', content: 'pic3.jpg' },
+                { type: 'image', content: 'pic4.jpg' },
+                { type: 'image', content: 'pic5.jpg' },
+                { type: 'image', content: 'pic6.jpg' },
+                { type: 'image', content: 'pic7.jpg' },
+                { type: 'image', content: 'pic8.jpg' },
+                { type: 'image', content: 'pic9.jpg' },
+                { type: 'image', content: 'pic10.jpg' },
+                { type: 'image', content: 'pic11.jpg' },
+                { type: 'image', content: 'pic12.jpg' },
+                { type: 'image', content: 'pic13.jpg' },
+                { type: 'image', content: 'pic14.jpg' },
+                { type: 'image', content: 'pic15.jpg' },
+                { type: 'image', content: 'pic16.jpg' },
+                { type: 'image', content: 'pic17.jpg' },
+                { type: 'image', content: 'pic18.jpg' },
+                { type: 'image', content: 'pic19.jpg' },
+                { type: 'image', content: 'pic20.jpg' },
+                { type: 'image', content: 'pic21.jpg' }
+                // ... add all 50 of your pictures
             ];
             // --------------------------------------------------
 
+
             const heart = document.getElementById('heart');
-            const message = document.getElementById('message');
-            let currentReason = "";
+            const messageContainer = document.getElementById('message-container');
+            // Keep track of the *content* to avoid repeats
+            let currentReasonContent = "Tap the heart!";
 
             function showNewReason() {
-                // Hide the current message
-                message.classList.remove('message-visible');
-                message.classList.add('message-hidden');
+                // Hide the current message/image
+                const currentElement = messageContainer.firstElementChild;
+                if (currentElement) {
+                    currentElement.classList.remove('message-visible');
+                    currentElement.classList.add('message-hidden');
+                }
 
                 // Wait for the fade-out animation to finish
                 setTimeout(() => {
-                    let newReason = "";
+                    let newReason;
                     // Make sure we don't show the same reason twice in a row
                     do {
-                        const randomIndex = Math.floor(Math.random() * reasons.length);
-                        newReason = reasons[randomIndex];
-                    } while (reasons.length > 1 && newReason === currentReason);
+                        const randomIndex = Math.floor(Math.random() * allReasons.length);
+                        newReason = allReasons[randomIndex];
+                    } while (allReasons.length > 1 && newReason.content === currentReasonContent);
 
-                    currentReason = newReason;
+                    currentReasonContent = newReason.content;
+                    let newHtml = '';
 
-                    // Set the new text
-                    message.textContent = currentReason;
+                    // Check if the new reason is text or an image and build the HTML
+                    if (newReason.type === 'text') {
+                        newHtml = `<p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">${newReason.content}</p>`;
+                    } else {
+                        newHtml = `<img src="${newReason.content}" alt="For Kaszandra ❤️" class="message-hidden max-h-80 rounded-lg shadow-lg object-cover">`;
+                    }
 
-                    // Fade the new message in
-                    // ** THIS IS THE LINE I FIXED ** (was message.li.classList)
-                    message.classList.remove('message-hidden');
-                    message.classList.add('message-visible');
+                    // Set the new HTML inside the container
+                    messageContainer.innerHTML = newHtml;
+
+                    // Fade the new element in
+                    const newElement = messageContainer.firstElementChild;
+                    if (newElement) {
+                        // This is a little trick to force the browser to apply the transition
+                        void newElement.offsetWidth; 
+                        
+                        newElement.classList.remove('message-hidden');
+                        newElement.classList.add('message-visible');
+                    }
 
                 }, 500); // This matches the transition duration
             }
 
-            // Show the initial message on load
-            setTimeout(() => {
-                message.textContent = "Tap the heart!";
-                message.classList.remove('message-hidden');
-                message.classList.add('message-visible');
-            }, 100);
+            // Show the initial "Tap the heart!" message on load
+            const initialMessage = document.getElementById('message');
+            if (initialMessage) {
+                setTimeout(() => {
+                    initialMessage.classList.remove('message-hidden');
+                    initialMessage.classList.add('message-visible');
+                }, 100);
+            }
 
-            // We add 'click' for desktop and 'touchstart' for mobile
-            // 'touchstart' feels more responsive than 'click' on a phone
+            // Event listeners for the heart
             heart.addEventListener('click', showNewReason);
             heart.addEventListener('touchstart', (e) => {
                 // Prevent the 'click' event from firing right after
