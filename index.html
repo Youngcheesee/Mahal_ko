@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For my Kaszandra ❤️</title>
+    <title>Video Test for Kaszandra</title>
 
     <!-- Your new icon links - this is perfect! -->
     <link rel="icon" href="lily.png">
@@ -36,8 +36,8 @@
             animation: pulse 2s infinite ease-in-out;
         }
 
-        /* Custom transition for the message OR picture */
-        /* These classes will be applied to <p> or <img> tags */
+        /* Custom transition for the message, picture, or video */
+        /* These classes will be applied to <p>, <img>, or <video> tags */
         #message-container > * {
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
@@ -81,79 +81,24 @@
 
         <!-- 
           The message/picture area. 
-          I changed h-32 (fixed height) to min-h-[8rem] (minimum height) 
-          and added flex utils to center the content. This lets it grow for pictures.
+          This will now hold <p>, <img>, or <video> elements.
         -->
         <div id="message-container" class="min-h-[8rem] mt-10 flex justify-center items-center">
             <p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">
-                Tap the heart!
+                Tap the heart to test video!
             </p>
         </div>
 
     </div>
 
     <script>
-        // We'll wrap the whole script in this event listener
-        // to make sure the HTML document is fully loaded before running any code.
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- THIS IS THE PART TO EDIT ---
-            // Add all your text reasons and picture filenames here.
+            // This test version ONLY has the video to see if it works.
             const allReasons = [
-                // --- Your Text Reasons ---
-                { type: 'text', content: "Your smile lights up my whole day." },
-                { type: 'text', content: "You are endlessly interesting, I can't get enough of listening to you." },
-                { type: 'text', content: "Your gorgeous lips" },
-                { type: 'text', content: "The bite of your nose." },
-                { type: 'text', content: "You're the prettiest girl." },
-                { type: 'text', content: "I love your brain!" },
-                { type: 'text', content: "The way you think and reason. I love that you give me new perspectives" },
-                { type: 'text', content: "The feeling I get when I am out with you." },
-                { type: 'text', content: "Your passion for the things you care about." },
-                { type: 'text', content: "You know me so well. It feels so special to be known by you." },
-                { type: 'text', content: "How much you care, so much more than I could ask for. Like I genuinely feel so loved when you casually do something I didn't think you could notice." },
-                { type: 'text', content: "I am taken into another world when I look in your eyes that I don't want to leave." },
-                { type: 'text', content: "You're my mirror in the best way." },
-                { type: 'text', content: "You make me feel safer than I ever felt before." },
-                { type: 'text', content: "You are my best friend." },
-                { type: 'text', content: "Your eye for things that are special." },
-                { type: 'text', content: "How you move" },
-                { type: 'text', content: "Your laugh" },
-                { type: 'text', content: "Your beautiful voice" },
-                { type: 'text', content: "How you react when I say I'll tickle you, and I'm not even touching you" },
-                { type: 'text', content: "Your music taste and listening to music with you, its so beautiful how I can actually feel the words now." },
-                { type: 'text', content: "Licking teeth." },
-                { type: 'text', content: "Your sense of style. Very good." },
-                { type: 'text', content: "Ang sarap sarap mo." },
-                { type: 'text', content: "Just the epitome of beautiful" },
-                { type: 'text', content: "just beautiful by definition" },
-                { type: 'text', content: "When you read this I want you to know that you're my world. You do make everything lighter. I think about you a lot and I get kilig every time. Your smile makes me smile and makes me so happy." },
-                { type: 'text', content: "When you said: 'Looking for a therapist for when you lose me?' just after I said I'm writing how much I love you." },
-                { type: 'text', content: "I LOWKEY wanna have intense diarrhea." },
-
-                // --- Your 21 Pictures ---
-                { type: 'image', content: 'pic1.jpg' },
-                { type: 'image', content: 'pic2.jpg' },
-                { type: 'image', content: 'pic3.jpg' },
-                { type: 'image', content: 'pic4.jpg' },
-                { type: 'image', content: 'pic5.jpg' },
-                { type: 'image', content: 'pic6.jpg' },
-                { type: 'image', content: 'pic7.jpg' },
-                { type: 'image', content: 'pic8.jpg' },
-                { type: 'image', content: 'pic9.jpg' },
-                { type: 'image', content: 'pic10.jpg' },
-                { type: 'image', content: 'pic11.jpg' },
-                { type: 'image', content: 'pic12.jpg' },
-                { type: 'image', content: 'pic13.jpg' },
-                { type: 'image', content: 'pic14.jpg' },
-                { type: 'image', content: 'pic15.jpg' },
-                { type: 'image', content: 'pic16.jpg' },
-                { type: 'image', content: 'pic17.jpg' },
-                { type: 'image', content: 'pic18.jpg' },
-                { type: 'image', content: 'pic19.jpg' },
-                { type: 'image', content: 'pic20.jpg' },
-                { type: 'image', content: 'pic21.jpg' }
-                // ... add all 50 of your pictures
+                // --- Your Video ---
+                { type: 'video', content: 'vid1.mp4' }
             ];
             // --------------------------------------------------
 
@@ -183,11 +128,16 @@
                     currentReasonContent = newReason.content;
                     let newHtml = '';
 
-                    // Check if the new reason is text or an image and build the HTML
+                    // Check if the new reason is text, an image, or a video
                     if (newReason.type === 'text') {
                         newHtml = `<p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">${newReason.content}</p>`;
-                    } else {
+                    } else if (newReason.type === 'image') {
                         newHtml = `<img src="${newReason.content}" alt="For Kaszandra ❤️" class="message-hidden max-h-80 rounded-lg shadow-lg object-cover">`;
+                    } else if (newReason.type === 'video') {
+                        // Added video support!
+                        // Added autoplay back in. It will try to autoplay with sound (since it's after a click).
+                        // If the browser blocks it, 'controls' will still be visible for manual play.
+                        newHtml = `<video src="${newReason.content}" class="message-hidden max-h-80 rounded-lg shadow-lg" playsinline autoplay controls loop></video>`;
                     }
 
                     // Set the new HTML inside the container
