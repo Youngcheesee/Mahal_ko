@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> 1 year Mahal ko ❤️</title>
+    <title>1 year Mahal ko ❤️</title>
 
-    <!-- Your new icon links - this is perfect! -->
     <link rel="icon" href="lily.png">
     <link rel="apple-touch-icon" href="lily.png">
 
-    <!-- Makes it feel like a full-screen app on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,27 +15,19 @@
     <style>
         body, html {
             font-family: 'Inter', sans-serif;
-            /* Prevent scrolling and bouncing */
             overflow: hidden;
             height: 100%;
         }
 
-        /* A simple pulsating animation for the heart */
         @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .heart-pulse {
             animation: pulse 2s infinite ease-in-out;
         }
 
-        /* Custom transition for the message, picture, or video */
-        /* These classes will be applied to <p>, <img>, or <video> tags */
         #message-container > * {
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
@@ -52,21 +42,17 @@
             transform: translateY(0);
         }
 
-        /* Ensure no weird text selection on tap */
         .no-select {
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
     </style>
 </head>
 <body class="h-full bg-gradient-to-t from-pink-300 to-rose-200 flex flex-col items-center justify-center p-4 no-select">
 
-    <!-- Main container for the app content -->
     <div class="flex flex-col items-center justify-center text-center w-full h-full">
 
-        <!-- The tappable heart -->
-        <!-- We use 'touchstart' and 'mousedown' for instant response on mobile and desktop -->
         <div id="heart" class="cursor-pointer heart-pulse">
             <svg class="w-48 h-48 drop-shadow-lg" viewBox="0 0 24 24" fill="url(#heartGradient)">
                 <defs>
@@ -79,10 +65,6 @@
             </svg>
         </div>
 
-        <!--
-          The message/picture area.
-          This will now hold <p>, <img>, or <video> elements.
-        -->
         <div id="message-container" class="min-h-[8rem] mt-10 flex justify-center items-center">
             <p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">
                 Tap the heart!
@@ -94,10 +76,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- THIS IS THE PART TO EDIT ---
-            // Add all your text reasons and picture filenames here.
+            // --- DATA LIST ---
             const allReasons = [
-                // --- Your Text Reasons ---
+                // Text
                 { type: 'text', content: "Your smile lights up my whole day." },
                 { type: 'text', content: "You are endlessly interesting, I can't get enough of listening to you." },
                 { type: 'text', content: "Your gorgeous lips" },
@@ -127,8 +108,7 @@
                 { type: 'text', content: "When you read this I want you to know that you're my world. You do make everything lighter. I think about you a lot and I get kilig every time. Your smile makes me smile and makes me so happy." },
                 { type: 'text', content: "When you said: 'Looking for a therapist for when you lose me?' just after I said I'm writing how much I love you." },
                 { type: 'text', content: "I LOWKEY wanna have intense diarrhea." },
-
-                // --- Your Pictures (1-51) ---
+                // Images
                 { type: 'image', content: 'pic1.jpg' },
                 { type: 'image', content: 'pic2.jpg' },
                 { type: 'image', content: 'pic3.jpg' },
@@ -181,67 +161,93 @@
                 { type: 'image', content: 'pic50.jpg' },
                 { type: 'image', content: 'pic51.jpg' },
                 { type: 'image', content: 'pic52.jpg' },
-
-                // --- Your Video ---
+                // Video
                 { type: 'video', content: 'vid1.mp4' }
             ];
-            // --------------------------------------------------
-
 
             const heart = document.getElementById('heart');
             const messageContainer = document.getElementById('message-container');
-            // Keep track of the *content* to avoid repeats
-            let currentReasonContent = "Tap the heart!";
+            
+            // --- NEW LOGIC VARIABLES ---
+            // This array will hold the mixed-up indices (e.g., [5, 0, 12, 4...])
+            let shuffledIndices = [];
+            // This tracks which one we are currently showing
+            let currentIndex = 0;
+
+            // 1. Function to shuffle an array (Fisher-Yates shuffle)
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // 2. Function to refill and reshuffle the deck
+            function refillPool() {
+                // Create an array of numbers from 0 to allReasons.length - 1
+                shuffledIndices = Array.from({length: allReasons.length}, (_, i) => i);
+                // Shuffle them
+                shuffleArray(shuffledIndices);
+                // Reset counter
+                currentIndex = 0;
+            }
+
+            // Initialize the pool on load
+            refillPool();
 
             function showNewReason() {
-                // Hide the current message/image
+                // Hide current message
                 const currentElement = messageContainer.firstElementChild;
                 if (currentElement) {
                     currentElement.classList.remove('message-visible');
                     currentElement.classList.add('message-hidden');
                 }
 
-                // Wait for the fade-out animation to finish
                 setTimeout(() => {
-                    let newReason;
-                    // Make sure we don't show the same reason twice in a row
-                    do {
-                        const randomIndex = Math.floor(Math.random() * allReasons.length);
-                        newReason = allReasons[randomIndex];
-                    } while (allReasons.length > 1 && newReason.content === currentReasonContent);
+                    // Check if we have shown all items
+                    if (currentIndex >= shuffledIndices.length) {
+                        // If yes, reshuffle and start over!
+                        refillPool();
+                        
+                        // Optional: Prevent the very first item of the new deck 
+                        // from being the same as the very last item of the old deck
+                        // (just in case luck makes that happen)
+                        if (shuffledIndices[0] === shuffledIndices[shuffledIndices.length - 1]) {
+                           // Swap the first item with the second one
+                           [shuffledIndices[0], shuffledIndices[1]] = [shuffledIndices[1], shuffledIndices[0]];
+                        }
+                    }
 
-                    currentReasonContent = newReason.content;
+                    // Get the next index from our shuffled list
+                    const reasonIndex = shuffledIndices[currentIndex];
+                    const newReason = allReasons[reasonIndex];
+                    
+                    // Increment for next time
+                    currentIndex++;
+
                     let newHtml = '';
-
-                    // Check if the new reason is text, an image, or a video
                     if (newReason.type === 'text') {
                         newHtml = `<p id="message" class="text-2xl md:text-3xl font-bold text-white text-shadow-md message-hidden max-w-md">${newReason.content}</p>`;
                     } else if (newReason.type === 'image') {
                         newHtml = `<img src="${newReason.content}" alt="For Kaszandra ❤️" class="message-hidden max-h-80 rounded-lg shadow-lg object-cover">`;
                     } else if (newReason.type === 'video') {
-                        // Added video support!
-                        // Added autoplay back in. It will try to autoplay with sound (since it's after a click).
-                        // If the browser blocks it, 'controls' will still be visible for manual play.
                         newHtml = `<video src="${newReason.content}" class="message-hidden max-h-80 rounded-lg shadow-lg" playsinline autoplay controls loop></video>`;
                     }
 
-                    // Set the new HTML inside the container
                     messageContainer.innerHTML = newHtml;
 
-                    // Fade the new element in
                     const newElement = messageContainer.firstElementChild;
                     if (newElement) {
-                        // This is a little trick to force the browser to apply the transition
-                        void newElement.offsetWidth;
-
+                        void newElement.offsetWidth; // Force reflow
                         newElement.classList.remove('message-hidden');
                         newElement.classList.add('message-visible');
                     }
 
-                }, 500); // This matches the transition duration
+                }, 500);
             }
 
-            // Show the initial "Tap the heart!" message on load
+            // Show initial message
             const initialMessage = document.getElementById('message');
             if (initialMessage) {
                 setTimeout(() => {
@@ -250,16 +256,14 @@
                 }, 100);
             }
 
-            // Event listeners for the heart
+            // Event Listeners
             heart.addEventListener('click', showNewReason);
             heart.addEventListener('touchstart', (e) => {
-                // Prevent the 'click' event from firing right after
                 e.preventDefault();
                 showNewReason();
             });
 
-        }); // We close the DOMContentLoaded listener here
+        });
     </script>
 </body>
 </html>
-
